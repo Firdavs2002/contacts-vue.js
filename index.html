@@ -53,7 +53,7 @@
                     <div class="header">
                         <form class="form-contact">
                             <div class="form-group">
-                                <input type="search" class="form-control" placeholder="поиск контактов . . .">
+                                <input type="search" class="form-control" v-model="searchQuery" placeholder="поиск контактов . . .">
                             </div>
                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addContact">
                                 Добавить <i class="fa fa-user-plus"></i>
@@ -73,7 +73,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="contact in contacts">
+                            <tr v-for="contact in resultQuery">
                                 <th scope="row">{{ contact.id }}</th>
                                 <th scope="row">{{ contact.name }}</th>
                                 <td v-if="contact.phones.length > 1">{{ contact.phones[0] }} ...</td>

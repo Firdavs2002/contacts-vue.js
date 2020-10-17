@@ -7,6 +7,7 @@ let nextId = 0;
 const main = new Vue({
     el: '#vue',
     data: {
+        searchQuery: null,
         idContact: 0,
         idForm: 0,
         editer: false,
@@ -186,6 +187,18 @@ const main = new Vue({
             for(let input of formData.entries()) if (input[1] == '') this.contacts[id-1].addresses.splice(j, 1); j++;
             for(let input of formData.entries()) if (input[1] == '') this.contacts[id-1].emails.splice(k, 1); k++;
         },
+    },
+
+    computed: {
+        resultQuery(){
+            if(this.searchQuery){
+                return this.contacts.filter((item)=>{
+                    return this.searchQuery.toLowerCase().split(' ').every(v => item.name.toLowerCase().includes(v))
+                })
+            }else{
+                return this.contacts;
+            }
+        }
     },
 
     watch: {
