@@ -55,47 +55,108 @@
                             <div class="form-group">
                                 <input type="search" class="form-control" placeholder="поиск контактов . . .">
                             </div>
-                            <button type="button" class="btn btn-success">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addContact">
                                 Добавить <i class="fa fa-user-plus"></i>
                             </button>
                         </form>
                     </div>
 
-                    <table class="table table-striped table-dark">
+                    <table class="table table-striped table-dark" v-if="contacts.length">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Handle</th>
+                                <th scope="col">Имя</th>
+                                <th scope="col">Телефон</th>
+                                <th scope="col">Адрес</th>
+                                <th scope="col" colspan="2" v-if="contacts.length > 0">Email</th>
+                                <th scope="col" v-else="">Email</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
+                            <tr v-for="contact in contacts">
+                                <th scope="row">{{ contact.id }}</th>
+                                <th scope="row">{{ contact.name }}</th>
+                                <td v-if="contact.phones.length > 1">{{ contact.phones[0] }} ...</td>
+                                <td v-else>{{ contact.phones[0] }}</td>
+                                <td v-if="contact.addresses.length > 1">{{ contact.addresses[0] }}...</td>
+                                <td v-else>{{ contact.addresses[0] }}</td>
+                                <td v-if="contact.emails.length > 1">{{ contact.emails[0] }} ...</td>
+                                <td v-else>{{ contact.emails[0] }}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="modal fade" id="addContact" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Добавление нового контакта</h5>
+                    <button type="button" class="close btn btn-secondary" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">
+                            <i class="fa fa-times"></i>
+                        </span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-contact add" method="POST" @submit="checkForm">
+                            <div class="name" style="width: 100%;">
+                                <div class="form-group form-modal"> <!-- проверка формы -->
+                                    <input type="text" class="form-control" name="name" placeholder="Имя" required>
+                                </div>
+                            </div>
+                            <div class="telephones" style="width: 100%;">
 
+                                <!-- <template v-if="isEdit"> -->
+                                    <div class="form-group form-modal"> <!-- проверка формы -->
+                                        <input type="text" class="form-control" name="phone" placeholder="телефон" required>
+                                        <button type="button" class="btn btn-primary plus" id="btn-phone" @click="addInputPhone">+</button>
+                                    </div>
+                                    <div class="form-group form-modal fade-enter-active" v-for="(add, index) in addInputs.phone"> <!-- цикл -->
+                                        <input type="text" class="form-control " name="phone" :placeholder="'телефон ' + add" required>
+                                        <button type="button" class="btn btn-danger plus" @click="delNewInputPhone">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </div>
+                                
+                            </div>
+                            <div class="addresses" style="width: 100%;">
+                                <div class="form-group form-modal"> <!-- проверка формы -->
+                                    <input type="text" class="form-control" name="address" placeholder="адрес" required>
+                                    <button type="button" class="btn btn-primary plus" id="btn-address" @click="addInputAddress">+</button>
+                                </div>
+                                <div class="form-group form-modal fade-enter-active" v-for="(add, index) in addInputs.address"> <!-- цикл -->
+                                    <input type="email" class="form-control " name="address" :placeholder="'адрес ' + add" required>
+                                    <button type="button" class="btn btn-danger plus" @click="delNewInputAddress">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="emails" style="width: 100%">
+                                <div class="form-group form-modal"> <!-- проверка формы -->
+                                    <input type="email" class="form-control" name="email" placeholder="email" required>
+                                    <button type="button" class="btn btn-primary plus" id="btn-email" @click="addInputEmail">+</button>
+                                </div>
+                                <div class="form-group form-modal fade-enter-active" v-for="(add, index) in addInputs.email"> <!-- цикл -->
+                                    <input type="email" class="form-control " name="email" :placeholder="'email ' + add" required>
+                                    <button type="button" class="btn btn-danger plus" @click="delNewInputEmail">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="submit" id="add" style="display: none;"></button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <label for="add" class="btn btn-success">
+                            Добавить <i class="fa fa-user-plus"></i>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- JavaScript  -->
     
     <script src="./public/js/jquery-3.3.1.min.js"></script>
