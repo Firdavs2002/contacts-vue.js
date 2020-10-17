@@ -82,6 +82,14 @@
                                 <td v-else>{{ contact.addresses[0] }}</td>
                                 <td v-if="contact.emails.length > 1">{{ contact.emails[0] }} ...</td>
                                 <td v-else>{{ contact.emails[0] }}</td>
+                                <th scope="col" style="width: 50px;">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button"
+                                            :id="'edit-' + contact.id"
+                                            @click="editContact"
+                                            data-toggle="modal" data-target="#editContact">
+                                        <i class="fa fa-user-edit" :id="'edit-' + contact.id"></i>
+                                    </button>
+                                </th>
                             </tr>
                         </tbody>
                     </table>
@@ -153,6 +161,86 @@
                             Добавить <i class="fa fa-user-plus"></i>
                         </label>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="editContact" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Изменение контакта</h5>
+                    <button type="button" class="close btn btn-secondary" data-dismiss="modal" @click="resetForm" :id="idForm" aria-label="Close">
+                    <span aria-hidden="true">
+                        <i class="fa fa-times" :id="idForm"></i>
+                    </span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-contact add" method="POST" :id="idForm" :class="'form-' + idForm" @submit="checkEdit">
+                        <div class="name" v-if="contacts.length > 0 && idContact > 0" style="width: 100%;">
+                            <div class="form-group form-modal"> <!-- проверка формы -->
+                                <input type="text" class="form-control" name="name" :value="contacts[idContact-1].name" placeholder="Имя" required>
+                            </div>
+                        </div>
+                        <div class="telephones" style="width: 100%;">
+                            <div class="form-group form-modal fade-enter-active" v-for="(add, index) in contact.phones"> 
+                                <input type="text" :value="contact.phones[index]" class="form-control" name="phone" placeholder="телефон" required>
+                                <button type="button" class="btn btn-primary plus"
+                                                    id="btn-phone"
+                                                    @click="addEddInputPhone"
+                                                    v-if="index == 0">+</button>
+                                <button type="button" class="btn btn-danger plus"
+                                        :id="index"
+                                        @click="delInputPhone"
+                                        v-if="index != 0">
+                                    <i class="fa fa-trash" @click="delInputPhone" :id="index"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="addresses" style="width: 100%;">
+                            <div class="form-group form-modal fade-enter-active" v-for="(add, index) in contact.addresses"> 
+                                <input type="text" :value="contact.addresses[index]" class="form-control" name="address" placeholder="address" required>
+                                <button type="button" class="btn btn-primary plus"
+                                                    id="btn-address"
+                                                    @click="addEddInputAddress"
+                                                    v-if="index == 0">+</button>
+                                <button type="button" class="btn btn-danger plus"
+                                        :id="index"
+                                        @click="delInputAddress"
+                                        v-if="index != 0">
+                                    <i class="fa fa-trash" @click="delInputAddress" :id="index"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="emails" style="width: 100%">
+                            <div class="form-group form-modal fade-enter-active" v-for="(add, index) in contact.emails"> 
+                                <input type="email" :value="contact.emails[index]" class="form-control" name="email" placeholder="email" required>
+                                <button type="button" class="btn btn-primary plus"
+                                                    id="btn-emails"
+                                                    @click="addEddInputEmail"
+                                                    v-if="index == 0">+</button>
+                                <button type="button" class="btn btn-danger plus"
+                                        :id="index"
+                                        @click="delInputEmail"
+                                        v-if="index != 0">
+                                    <i class="fa fa-trash" @click="delInputEmail" :id="index"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="submit" id="edd" style="display: none;"></button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            @click="delContact"
+                            :id="idContact">
+                        Удалить
+                        <i class="fa fa-trash" :id="idContact"></i>
+                    </button>
+                    <label for="edd" class="btn btn-success">
+                        Сохранить <i class="fa fa-save"></i>
+                    </label>
+                </div>
                 </div>
             </div>
         </div>
