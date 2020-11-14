@@ -179,7 +179,7 @@
                     <form class="form-contact add" method="POST" :id="idForm" :class="'form-' + idForm" @submit="checkEdit">
                         <div class="name" v-if="contacts.length > 0 && idContact > 0" style="width: 100%;">
                             <div class="form-group form-modal"> <!-- проверка формы -->
-                                <input type="text" class="form-control" name="name" :value="contacts[idContact-1].name" placeholder="Имя" required>
+                                <input type="text" class="form-control" name="name" :value="contacts[idContact-1] && contacts[idContact-1].name" placeholder="Имя" required>
                             </div>
                         </div>
                         <div class="telephones" style="width: 100%;">

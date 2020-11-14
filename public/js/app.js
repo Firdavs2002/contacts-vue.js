@@ -78,8 +78,8 @@ const main = new Vue({
 
         delContact(e) {
             const id = e.target.id;
-            this.nextId = id-1;
-            this.contacts.splice(e.target.id-1, 1);
+            this.nextId =  this.contacts.length-1;
+            this.contacts.splice(id-1, 1);
             for (let i = 1; i <= this.contacts["length"]; i++) {
                 this.contacts[i-1].id = i;
             }
