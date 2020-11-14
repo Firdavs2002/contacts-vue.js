@@ -61,7 +61,7 @@
                         </form>
                     </div>
 
-                    <table class="table table-striped table-dark" v-if="contacts.length">
+                    <table class="table table-striped table-dark" v-if="contacts.length && resultQuery.length">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -74,22 +74,25 @@
                         </thead>
                         <tbody>
                             <tr v-for="contact in resultQuery">
-                                <th scope="row">{{ contact.id }}</th>
-                                <th scope="row">{{ contact.name }}</th>
-                                <td v-if="contact.phones.length > 1">{{ contact.phones[0] }} ...</td>
-                                <td v-else>{{ contact.phones[0] }}</td>
-                                <td v-if="contact.addresses.length > 1">{{ contact.addresses[0] }}...</td>
-                                <td v-else>{{ contact.addresses[0] }}</td>
-                                <td v-if="contact.emails.length > 1">{{ contact.emails[0] }} ...</td>
-                                <td v-else>{{ contact.emails[0] }}</td>
-                                <th scope="col" style="width: 50px;">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button"
-                                            :id="'edit-' + contact.id"
-                                            @click="editContact"
-                                            data-toggle="modal" data-target="#editContact">
-                                        <i class="fa fa-user-edit" :id="'edit-' + contact.id"></i>
-                                    </button>
-                                </th>
+                                <div v-if="resultQuery.length > 0">
+                                    <th scope="row">{{ contact.id }}</th>
+                                    <th scope="row">{{ contact.name }}</th>
+                                    <td v-if="contact.phones.length > 1">{{ contact.phones[0] }} ...</td>
+                                    <td v-else>{{ contact.phones[0] }}</td>
+                                    <td v-if="contact.addresses.length > 1">{{ contact.addresses[0] }}...</td>
+                                    <td v-else>{{ contact.addresses[0] }}</td>
+                                    <td v-if="contact.emails.length > 1">{{ contact.emails[0] }} ...</td>
+                                    <td v-else>{{ contact.emails[0] }}</td>
+                                    <th scope="col" style="width: 50px;">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                :id="'edit-' + contact.id"
+                                                @click="editContact"
+                                                data-toggle="modal" data-target="#editContact">
+                                            <i class="fa fa-user-edit" :id="'edit-' + contact.id"></i>
+                                        </button>
+                                    </th>
+                                </div>
+                                <div v-else-if="contacts.length > 0" class="table-dark th">Контакт не найден <i class="fas fa-exclamation-triangle"></i></div>
                             </tr>
                         </tbody>
                     </table>
